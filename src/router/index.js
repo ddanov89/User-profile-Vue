@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const ProfilePage = () => import('@/views/ProfilePage.vue')
-const EditPage = () => import('@/views/EditPage.vue')
-const NotFound = () => import('@/views/NotFound.vue')
+const ProfileView = () => import('@/views/ProfileView.vue')
+const EditView = () => import('@/views/EditView.vue')
+const NotFoundView = () => import('@/views/NotFoundView.vue')
 
 const routes = [
   {
@@ -11,18 +11,18 @@ const routes = [
   },
   {
     path: '/profile-page/:userId',
-    name: 'ProfilePage',
-    component: ProfilePage,
+    name: 'ProfileView',
+    component: ProfileView,
   },
   {
     path: '/edit/:userId',
-    name: 'EditPage',
-    component: EditPage,
+    name: 'EditView',
+    component: EditView,
   },
   {
     path: '/404',
     name: 'NotFound',
-    component: NotFound,
+    component: NotFoundView,
   },
   {
     path: '/:catchAll(.*)',
