@@ -1,48 +1,55 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useProfileStore } from '@/stores/profileStore'
+import { toast } from 'vue3-toastify';
 
 const route = useRoute()
 const router = useRouter()
 const profileStore = useProfileStore()
 
 const defaultAvatarUrl = 'https://avatars.githubusercontent.com/u/583231?v=4'
+const userId = route.params.userId
+const selectedUser = ref(null)
 
 onMounted(async () => {
-  const userId = route.params.userId
-  await profileStore.fetchUserById(userId)
+  // Try to load user from store/localStorage
+  let user = profileStore.getUserById(userId)
 
-  if (!profileStore.currentUser) {
+  if (!user) {
+    await profileStore.fetchAllUsers()
+    user = profileStore.getUserById(userId)
+  }
+
+  if (user) {
+    selectedUser.value = user
+  } else {
     router.push('/404')
   }
 })
 
 function launchEditForm() {
-  if (profileStore.currentUser?.id) {
-    router.push(`/edit/${profileStore.currentUser.id}`)
+  if (selectedUser.value?.id) {
+    router.push(`/edit/${selectedUser.value.id}`)
   } else {
-    // Here you can add a snackbar or alert if needed
-    alert('Action not allowed')
+    toast.error('Action not allowed')
   }
 }
 </script>
 
 <template>
   <section id="profile">
+
     <div class="background-overlay"></div>
 
-    <div class="primary-section" v-if="profileStore.currentUser">
+    <div class="primary-section" v-if="selectedUser">
       <div class="avatar">
-        <img
-          :src="profileStore.currentUser.avatar || defaultAvatarUrl"
-          alt="avatar"
-        />
+        <img :src="selectedUser.avatar || defaultAvatarUrl" alt="avatar" />
       </div>
 
       <div class="personal-information">
-        <div class="name">{{ profileStore.currentUser.name }}</div>
-        <div class="website">{{ profileStore.currentUser.website }}</div>
+        <div class="name">{{ selectedUser.name }}</div>
+        <div class="website">{{ selectedUser.website }}</div>
 
         <div class="button">
           <button type="button" class="edit" @click="launchEditForm">
@@ -52,29 +59,29 @@ function launchEditForm() {
       </div>
     </div>
 
-    <div class="secondary-section" v-if="profileStore.currentUser">
+    <div class="secondary-section" v-if="selectedUser">
       <div class="digital-information">
         <div class="section-label">Digital Information</div>
 
         <div class="info-row">
           <div class="name-label">Name</div>
-          <div class="name">{{ profileStore.currentUser.name }}</div>
+          <div class="name">{{ selectedUser.name }}</div>
         </div>
         <div class="info-row">
           <div class="username-label">Username</div>
-          <div class="username">{{ profileStore.currentUser.username }}</div>
+          <div class="username">{{ selectedUser.username }}</div>
         </div>
         <div class="info-row">
           <div class="email-label">Email</div>
-          <div class="email">{{ profileStore.currentUser.email }}</div>
+          <div class="email">{{ selectedUser.email }}</div>
         </div>
         <div class="info-row">
           <div class="phone-label">Phone</div>
-          <div class="phone">{{ profileStore.currentUser.phone }}</div>
+          <div class="phone">{{ selectedUser.phone }}</div>
         </div>
         <div class="info-row">
           <div class="company-label">Company</div>
-          <div class="company">{{ profileStore.currentUser.company.name }}</div>
+          <div class="company">{{ selectedUser.company.name }}</div>
         </div>
       </div>
 
@@ -83,28 +90,29 @@ function launchEditForm() {
 
         <div class="info-row">
           <div class="address-label">Street</div>
-          <div class="street">{{ profileStore.currentUser.address.street }}</div>
+          <div class="street">{{ selectedUser.address.street }}</div>
         </div>
         <div class="info-row">
           <div class="address-label">Suite</div>
-          <div class="suite">{{ profileStore.currentUser.address.suite }}</div>
+          <div class="suite">{{ selectedUser.address.suite }}</div>
         </div>
         <div class="info-row">
           <div class="address-label">City</div>
-          <div class="city">{{ profileStore.currentUser.address.city }}</div>
+          <div class="city">{{ selectedUser.address.city }}</div>
         </div>
         <div class="info-row">
           <div class="address-label">Zip Code</div>
-          <div class="zipcode">{{ profileStore.currentUser.address.zipcode }}</div>
+          <div class="zipcode">{{ selectedUser.address.zipcode }}</div>
         </div>
       </div>
     </div>
   </section>
 </template>
-
 <style scoped>
+
 #profile {
-  max-width: 1200px;
+  /* max-width: 1400px; */
+  width: 100%;
   margin: 8em auto;
   padding: 2rem;
   background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
