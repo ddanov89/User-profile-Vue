@@ -272,7 +272,7 @@ onMounted(() => {
 #edit {
   width: 100%;
   max-width: 1400px;
-  margin: 190px 0 0 0;
+  margin: 500px 0 0 0;
   padding: 0 1rem;
   display: flex;
   justify-content: center;
@@ -290,6 +290,13 @@ onMounted(() => {
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(4px);
+}
+
+/* Optional: make the form scrollable if screen is too small */
+@media (max-width: 1024px) {
+  #edit {
+     margin: 100px 0 0 0;
+  }
 }
 
 /* Optional: make the form scrollable if screen is too small */
