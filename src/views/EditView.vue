@@ -251,7 +251,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Your CSS unchanged */
 .loader {
   position: absolute;
   top: 0;
@@ -276,9 +275,9 @@ onMounted(() => {
   padding: 0 1rem;
   display: flex;
   justify-content: center;
-  align-items: center; /* center vertically */
+  align-items: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  box-sizing: border-box; /* ensure padding doesn't affect width */
+  box-sizing: border-box;
 }
 
 #edit-container {
@@ -292,17 +291,15 @@ onMounted(() => {
   backdrop-filter: blur(4px);
 }
 
-/* Optional: make the form scrollable if screen is too small */
 @media (max-width: 1024px) {
   #edit {
      margin: 100px 0 0 0;
   }
 }
 
-/* Optional: make the form scrollable if screen is too small */
 @media (max-height: 600px) {
   #edit {
-    align-items: flex-start; /* don't vertically center on small height */
+    align-items: flex-start;
     padding-top: 2rem;
   }
 }

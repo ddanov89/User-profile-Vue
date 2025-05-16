@@ -14,7 +14,7 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(Toast, {
-    autoClose: 3000, // Toast auto-close duration in milliseconds
+    autoClose: 3000,
 });
 
 app.mount('#app')

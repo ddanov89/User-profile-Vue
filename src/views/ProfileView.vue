@@ -13,7 +13,6 @@ const userId = route.params.userId
 const selectedUser = ref(null)
 
 onMounted(async () => {
-  // Try to load user from store/localStorage
   let user = profileStore.getUserById(userId)
 
   if (!user) {
@@ -111,7 +110,6 @@ function launchEditForm() {
 <style scoped>
 
 #profile {
-  /* max-width: 1400px; */
   width: 100%;
   margin: 8em auto;
   padding: 2rem;
